@@ -544,9 +544,9 @@ class _StickySliderState extends State<StickySlider> with TickerProviderStateMix
 
   final GlobalKey _renderObjectKey = GlobalKey();
 
-  Future<String?> getPlatformVersion() {
-    return StickySliderPlatform.instance.getPlatformVersion();
-  }
+  // Future<String?> getPlatformVersion() {
+  //   return StickySliderPlatform.instance.getPlatformVersion();
+  // }
 
   // Keyboard mapping for a focused slider.
   static const Map<ShortcutActivator, Intent> _traditionalNavShortcutMap = <ShortcutActivator, Intent>{
