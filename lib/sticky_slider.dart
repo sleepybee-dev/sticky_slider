@@ -692,12 +692,14 @@ class _StickySliderState extends State<StickySlider> with TickerProviderStateMix
     assert(widget.points != null);
     assert(value >= 0.0 && value <= 1.0);
 
+    double clampValue = clampDouble(value, 0, 1.0);
+
     List<double> points = List.from(widget.points!);
     points.sort();
     double lastDiff = 1;
     double nearestPoint = 1;
     for (double point in points) {
-        double curDiff = (value - point).abs();
+        double curDiff = (clampValue - point).abs();
         if (lastDiff < curDiff) {
           break;
         } else {
@@ -707,11 +709,11 @@ class _StickySliderState extends State<StickySlider> with TickerProviderStateMix
     }
 
     double pointCoverage = widget.pointCoverage ?? 0;
-    if (value >= nearestPoint - pointCoverage && value <= nearestPoint + pointCoverage) {
+    if (clampValue >= nearestPoint - pointCoverage && clampValue <= nearestPoint + pointCoverage) {
       return nearestPoint;
     }
 
-    return value;
+    return clampValue;
   }
 
   double _convert(double value) {
@@ -1449,15 +1451,15 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
   double _discretize(double value) {
     assert(value > 0.0 && value < 1.0);
 
-    double result = clampDouble(value, 0.0, 1.0);
+    double clampValue = clampDouble(value, 0.0, 1.0);
     if (!isDiscrete) {
-      return result;
+      return clampValue;
     }
 
     double lastDiff = 1;
     double nearestPoint = 1;
     for (double point in _points!) {
-      double curDiff = (value - point).abs();
+      double curDiff = (clampValue - point).abs();
       if (lastDiff < curDiff) {
         break;
       } else {
@@ -1467,11 +1469,11 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     }
 
     double pointCoverage = _pointCoverage ?? 0;
-    if (value >= nearestPoint - pointCoverage && value <= nearestPoint + pointCoverage) {
+    if (clampValue >= nearestPoint - pointCoverage && clampValue <= nearestPoint + pointCoverage) {
       return nearestPoint;
     }
 
-    return value;
+    return clampValue;
   }
 
   void _startInteraction(Offset globalPosition) {
